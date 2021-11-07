@@ -13,13 +13,20 @@ class StreamRead extends Readable {
 
   _read() {
     this.readStream.on('data', chunk => {
-      new CipherChoice(chunk.toString(), getInformationFromCLI.config)
+      new CipherChoice(`${chunk.toString()}\n`, getInformationFromCLI.config)
     })
     this.readStream.on('error', (err) => {
       process.stderr.write(`Упс... Фаила ${getInformationFromCLI.input} не существет. Прошу вас написать ваше сообщение здесь\n`)
-      process.stdin.on('readable', () => {
-        new CipherChoice(process.stdin.read().toString(), getInformationFromCLI.config)
-      })
+      // 
+      var rl = require('readline').createInterface({ input: process.stdin, output: process.stdoute });
+      rl.on('line', data => {
+        if (data == 'exit') {
+          process.stdout.write('До свидания');
+          process.exit();
+        }
+        new CipherChoice(`${data.toString()}\n`, getInformationFromCLI.config)
+      });
+
     })
   }
 
@@ -42,7 +49,8 @@ class StreamWrite extends Writable {
     })
     this.readStream.on('error', () => {
       process.stderr.write(`Фаила ${getInformationFromCLI.output} не существует. Конечный результат шифрования представлен ниже\n`)
-      process.stdout.write(this.data.trim())
+      process.stdout.write(`Результат шифрования: ${this.data.trim()}\n\n`)
+      process.stdout.write('Введите сообщение: ');
     })
 
 
