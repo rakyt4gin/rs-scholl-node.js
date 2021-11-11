@@ -16,7 +16,7 @@ class StreamRead extends Readable {
       new CipherChoice(`${chunk.toString()}\n`, getInformationFromCLI.config)
     })
     this.readStream.on('error', (err) => {
-      process.stderr.write(`Упс... Фаила ${getInformationFromCLI.input} не существет. Прошу вас написать ваше сообщение здесь\n`)
+      process.stderr.write(`Упс... Фаила для чтения ${getInformationFromCLI.input} не существует. Прошу вас написать ваше сообщение здесь\n`)
       // 
       var rl = require('readline').createInterface({ input: process.stdin, output: process.stdoute });
       rl.on('line', data => {
@@ -48,9 +48,14 @@ class StreamWrite extends Writable {
       this._write(this.data.trim())
     })
     this.readStream.on('error', () => {
-      process.stderr.write(`Фаила ${getInformationFromCLI.output} не существует. Конечный результат шифрования представлен ниже\n`)
+      process.stderr.write(`Фаила для записи ${getInformationFromCLI.output} не существует. Конечный результат шифрования представлен ниже\n`)
       process.stdout.write(`Результат шифрования: ${this.data.trim()}\n\n`)
-      process.stdout.write('Введите сообщение: ');
+      fs.stat(path.join(__dirname, getInformationFromCLI.input), function (err, stats) {
+        if (err) {
+          process.stdout.write('Введите сообщение: ');
+        }
+      });
+
     })
 
 
