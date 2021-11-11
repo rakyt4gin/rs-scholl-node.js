@@ -16,7 +16,7 @@ class GetInformationFromCLI {
         this.data.input = ''
       }
     } else {
-      this.data.output = ''
+      this.data.input = ''
     }
     this.data.outputFlag = argv[argv.indexOf('-o')]
     if (argv[argv.indexOf('-o') + 1]) {
@@ -29,7 +29,6 @@ class GetInformationFromCLI {
     } else {
       this.data.output = ''
     }
-    console.log(this.data);
     return this.data
   }
 
