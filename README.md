@@ -4,7 +4,7 @@
 
 3 Запуск программы.
 
-  node index.js -c "C1-C1-R0-A" -i "./input.txt" -o "./output.txt"
+  node main.js -c "C1-C1-R0-A" -i "./input.txt" -o "./output.txt"
 
 4 Правила управления консолью.
 
